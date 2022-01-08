@@ -1,2 +1,4 @@
 *.o
 classify
+classify_og
+gmon.out

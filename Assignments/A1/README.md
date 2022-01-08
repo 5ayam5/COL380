@@ -5,7 +5,13 @@ You are to make this code faster. Sample data files are included. Other data fil
 
 ## Submission Instruction:
 Submit a single zip file named [Your Entry Number].zip with all of the following:
+
 1. Modified code (and Makefile) with improved efficiency.
 1. Analysis of gprof, perf and valgrind reports of the original code.
 1. Analysis of gprof, perf and valgrind reports of the modified code.
 1. Document explaining what you learned from analysis 2, and how they led to the decisions to modify the code.
+
+## Modifications Done (will be updated with code changes)
+1. Used `xincrease` instead of `increase` for `Counter` (safer and not much difference in time, also how will it help if it does?)
+1. Changed the loop over `D` from a skip-by number of threads to a divide into consecutive ranges
+1. Performed a similar modification for the loop over `R` (doesn't visibly help)
