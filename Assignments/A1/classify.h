@@ -92,6 +92,7 @@ public:
          }
          set(_num++, range.lo, range.hi); // Add the new interval at the end
       }
+      return *this;
    }
 
    int range(int val, bool strict = false) const { // Tell the range in which val lies (strict => boundary match not ok)
