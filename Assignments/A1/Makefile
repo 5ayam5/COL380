@@ -19,7 +19,7 @@ classify_og:$(objects_og)
 run_og: classify_og
 	./classify_og rfile dfile 1009072 4 25
 
-%.o: %.cpp classify.h
+%.o: %.cpp classify.h classify_og.h
 	$(CC) $(CFLAGS) -c $<
 
 clean:

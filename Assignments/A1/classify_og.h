@@ -6,55 +6,54 @@
 
 #define MAXTHREADS 64 // Maximum number of threads supported
 #define BADRANGE 0
-#define PADDING 8
 
 struct Data;
 class Ranges;
 
 Data classify(Data &D, const Ranges &R, unsigned int numt);
 
-class alignas(32) Counter { // Aligned allocation per counter. Is that
-                            // enough? Keeps per-thread subcount.
+class alignas(32) Counter { // Aligned allocation per counter. Is that enough?
+                            // Keeps per-thread subcount.
 public:
   Counter(unsigned int num = MAXTHREADS) {
     _numcount = num;
-    _counts = new unsigned int[num * PADDING];
+    _counts = new unsigned int[num];
     assert(_counts != NULL);
     zero();
   }
 
   void zero() { // Initialize
     for (int i = 0; i < _numcount; i++)
-      _counts[i * PADDING] = 0;
+      _counts[i] = 0;
   }
 
   void increase(unsigned int id) { // If each sub-counter belongs to a thread
                                    // mutual exclusion is not needed
     assert(id < _numcount);
-    _counts[id * PADDING]++;
+    _counts[id]++;
   }
 
   void xincrease(unsigned int id) { // Safe increment
     assert(id < _numcount);
     const std::lock_guard<std::mutex> lock(cmutex);
-    _counts[id * PADDING]++;
+    _counts[id]++;
   }
 
   unsigned int
   get(unsigned int id) const { // return subcounter value for specific thread
     assert(id < _numcount);
-    return _counts[id * PADDING];
+    return _counts[id];
   }
 
   void inspect() {
     std::cout << "Subcounts -- ";
     for (int i = 0; i < _numcount; i++)
-      std::cout << i << ":" << _counts[i * PADDING] << " ";
+      std::cout << i << ":" << _counts[i] << " ";
     std::cout << "\n";
   }
 
 private:
-  alignas(8) unsigned volatile int *_counts;
+  unsigned volatile int *_counts;
   unsigned int _numcount; // Per-thread subcounts
   std::mutex cmutex;
 };
