@@ -6,15 +6,15 @@
 
 #define MAXTHREADS 64 // Maximum number of threads supported
 #define BADRANGE 0
-#define PADDING 8
+#define PADDING 16
 
 struct Data;
 class Ranges;
 
 Data classify(Data &D, const Ranges &R, unsigned int numt);
 
-class alignas(32) Counter { // Aligned allocation per counter. Is that
-                            // enough? Keeps per-thread subcount.
+class Counter { // Aligned allocation per counter. Is that
+                // enough? Keeps per-thread subcount.
 public:
   Counter(unsigned int num = MAXTHREADS) {
     _numcount = num;
@@ -54,7 +54,7 @@ public:
   }
 
 private:
-  alignas(8) unsigned volatile int *_counts;
+  unsigned volatile int *_counts;
   unsigned int _numcount; // Per-thread subcounts
   std::mutex cmutex;
 };
@@ -166,5 +166,16 @@ struct Data {
   void inspect() {
     for (int i = 0; i < ndata; i++)
       std::cout << i << ": " << data[i].key << " -- " << data[i].value << "\n";
+  }
+
+  bool issorted() {
+    int prev = -1;
+    for (int i = 0; i < ndata; i++)
+      if (prev > data[i].value) {
+        std::cout << i << ' ' << prev << ' ' << data[i].value << std::endl;
+        return false;
+      } else
+        prev = data[i].value;
+    return true;
   }
 };

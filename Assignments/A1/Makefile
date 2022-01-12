@@ -1,5 +1,8 @@
 CC=g++
 CFLAGS=-std=c++11 -O2 -fopenmp
+DNUM=1009072
+THREAD_NUM=4
+RUN_NUM=3
 
 sources=main.cpp classify.cpp
 objects=$(sources:.cpp=.o)
@@ -11,13 +14,13 @@ classify:$(objects)
 	$(CC) $(CFLAGS) $^ -o $@
 
 run: classify
-	./classify rfile dfile 1009072 4 3
+	./classify rfile dfile $(DNUM) $(THREAD_NUM) $(RUN_NUM)
 
 classify_og:$(objects_og)
-	$(CC) $(CFLAGS) -fopenmp $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@
 
 run_og: classify_og
-	./classify_og rfile dfile 1009072 4 3
+	./classify_og rfile dfile $(DNUM) $(THREAD_NUM) $(RUN_NUM)
 
 %.o: %.cpp classify.h classify_og.h
 	$(CC) $(CFLAGS) -c $<

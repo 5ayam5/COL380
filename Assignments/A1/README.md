@@ -12,6 +12,7 @@ Submit a single zip file named [Your Entry Number].zip with all of the following
 1. Document explaining what you learned from analysis 2, and how they led to the decisions to modify the code.
 
 ## Modifications Done (will be updated with code changes)
-1. Used `xincrease` instead of `increase` for `Counter` (safer and not much difference in time, also how will it help if it does?)
 1. Changed the loop over `D` from a skip-by number of threads to a divide into consecutive ranges
-1. Performed a similar modification for the loop over `R` (doesn't visibly help)
+1. Performed a similar modification for the loop over `R`, but indices divided such that there are roughly equal number of values to update for each thread
+1. Implemented padding in the array to prevent false sharing
+1. Removed alignment in `Counter` since it was in fact increasing cache misses (when being accessed in the first threading loop)
