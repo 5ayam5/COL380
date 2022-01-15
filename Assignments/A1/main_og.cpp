@@ -1,4 +1,4 @@
-#include "classify.h"
+#include "classify_og.h"
 #include <algorithm>
 #include <chrono>
 #include <fstream>
@@ -10,7 +10,6 @@ float timedwork(Data &D, const Ranges &R, unsigned int numt) {
   auto begin = std::chrono::high_resolution_clock::now();
   Data D2 = classify(D, R, numt);
   auto end = std::chrono::high_resolution_clock::now();
-  assert(D2.issorted());
   return (1e-6 *
           (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin))
               .count());

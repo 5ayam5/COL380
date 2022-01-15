@@ -6,7 +6,7 @@
 
 #define MAXTHREADS 64 // Maximum number of threads supported
 #define BADRANGE 0
-#define PADDING 16
+#define PADDING 5
 
 struct Data;
 class Ranges;
@@ -18,38 +18,38 @@ class Counter { // Aligned allocation per counter. Is that
 public:
   Counter(unsigned int num = MAXTHREADS) {
     _numcount = num;
-    _counts = new unsigned int[num * PADDING];
+    _counts = new unsigned int[num << PADDING];
     assert(_counts != NULL);
     zero();
   }
 
   void zero() { // Initialize
     for (int i = 0; i < _numcount; i++)
-      _counts[i * PADDING] = 0;
+      _counts[i << PADDING] = 0;
   }
 
   void increase(unsigned int id) { // If each sub-counter belongs to a thread
                                    // mutual exclusion is not needed
     assert(id < _numcount);
-    _counts[id * PADDING]++;
+    _counts[id << PADDING]++;
   }
 
   void xincrease(unsigned int id) { // Safe increment
     assert(id < _numcount);
     const std::lock_guard<std::mutex> lock(cmutex);
-    _counts[id * PADDING]++;
+    _counts[id << PADDING]++;
   }
 
   unsigned int
   get(unsigned int id) const { // return subcounter value for specific thread
     assert(id < _numcount);
-    return _counts[id * PADDING];
+    return _counts[id << PADDING];
   }
 
   void inspect() {
     std::cout << "Subcounts -- ";
     for (int i = 0; i < _numcount; i++)
-      std::cout << i << ":" << _counts[i * PADDING] << " ";
+      std::cout << i << ":" << _counts[i << PADDING] << " ";
     std::cout << "\n";
   }
 

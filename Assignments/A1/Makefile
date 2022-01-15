@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-std=c++11 -O2 -fopenmp
+CFLAGS=-std=c++11 -O2 -fopenmp -g
 DNUM=1009072
 THREAD_NUM=4
 RUN_NUM=3
@@ -7,7 +7,7 @@ RUN_NUM=3
 sources=main.cpp classify.cpp
 objects=$(sources:.cpp=.o)
 
-sources_og=main.cpp classify_og.cpp
+sources_og=main_og.cpp classify_og.cpp
 objects_og=$(sources_og:.cpp=.o)
 
 classify:$(objects)
@@ -24,6 +24,12 @@ run_og: classify_og
 
 %.o: %.cpp classify.h classify_og.h
 	$(CC) $(CFLAGS) -c $<
+
+cachegrind: classify
+	valgrind --tool=cachegrind --cachegrind-out-file=classify.out ./classify rfile dfile 1009072 4 1
+
+cachegrind_og: classify_og
+	valgrind --tool=cachegrind --cachegrind-out-file=classify_og.out ./classify_og rfile dfile 1009072 4 1
 
 clean:
 	rm -f $(objects) $(objects_og) classify classify_og gmon.out
