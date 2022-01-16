@@ -4,10 +4,13 @@
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{graphicx}
+\usepackage{xcolor}
 \usepackage{subcaption}
 \usepackage{booktabs}
 \usepackage[left=25mm, top=25mm, bottom=30mm, right=25mm]{geometry}
 \usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}
+
+\definecolor{mintedbg}{rgb}{0.98,0.97,0.93}
 
 \title{COL380 Assignment 1}
 \author{Sayam Sethi}
@@ -28,7 +31,35 @@ The following observations were made after looking at the original code and anal
 	\item Additionally, in the second loop, for each range, the code was looping over the entire $D$ array, this lead to excessive read and write misses, apart from the wasted time complexity.
 \end{enumerate}
 \texttt{perf} was initially used to compare results with different modifications, however this was discarded in exchange of \texttt{cachegrid} tool of \texttt{valgrind} since \texttt{perf} had very high fluctuations across multiple runs of the same code. This led to inconsistent deductions and difficulty in removing noise from the results of the tool.\par
-Running \texttt{gprof} on the original code signified that \texttt{readRanges} took the most amount of time. This analysis wasn't helpful. Additionally, running \texttt{gprof} on the optimised code gave some absurd results that could not be inferred at all. Therefore, the output of \texttt{gprof} tool was discarded. However, the functioning of the tool has been very well understood.\par
+Running \texttt{gprof} on the original code signified that \texttt{readRanges} took the most amount of time. This analysis wasn't helpful. Additionally, running \texttt{gprof} on the optimised code gave some absurd results that could not be inferred at all. Therefore, the output of \texttt{gprof} tool was discarded. However, the functioning of the tool has been well understood.\par
+The improvements were made sequentially, i.e., performance was compared with the previous optimisation to find out if the optimisation helped in improving cache performance.
 
+\section{Reducing Cache Misses}
+The first improvement that was made was to reduce cache misses in the iterations of the loops. The first loop was changed to having single increments instead of an increment by \texttt{numt}. When this was run without any tool, the time taken to execute almost doubled.\par
+On further analysis, the reason turned out to be the non-randomness of the given data. This was resolved by \texttt{random\_shuffle} on the given data in the \texttt{readData} function.\par
+After this, the actual runtime didn't improve, however, the last level cache misses reduced for both read and write. Therefore this optimisation was successful in improving cache performace.\par
+Next, the second loop threading was inspected. The change here was implemented in a different way as compared to the previous loop since direct replication of the modification led to worse results in terms of running time instead.\par
+It was observed that the work is not being divided equally across all the threads since all bins did not have the same size. Therefore, the indices were divided such that the number of writes in each thread would approximately be the same. This was done by creating a new array \texttt{indices}.\par
+On running \texttt{cachegrind} on this output, it was observed that the last level cache misses were reduced in the case of writes. There was no improvement in the reads.
+
+\section{Reducing False Sharing}
+As mentioned in the first section, the cause of false sharing had been narrowed down. While experimenting with it, removing \texttt{alignas(32)} for the \texttt{Counter} class had led to great improvements in the cache misses in the last layer when reading and writing.\par
+The reason for this was narrowed down to the first threading loop where the \texttt{counts} array was being repeatedly fetched and the \texttt{\_counts} array was being modified. The additional padding provided by \texttt{alignas} was leading to less number of elements of the array being present in the cache which led to more cache misses.\par
+After this, the data in the \texttt{\_counts} array was padded such that each index mapped to $index \times 32 = index << 5$. This led to slight improvements in last level cache read and write misses. However, there was more than $50\%$ improvement in \texttt{l2\_rqsts.all\_rfo} and slight improvement in \texttt{l1d.replacement} on the \texttt{perf} tool.
+
+\section{Analysis of the Bottleneck and its Improvement}
+After the above improvements, it was observed that the most number of misses were happening in the second loop where the data had to be written to \texttt{D2} and be read from \texttt{D}. The reason for this was the non-sequential nature of the data reads and updates. Entire \texttt{D.data} was being scanned multiple times in each thread. Additionally the writes were in such a fashion that encouraged false sharing.\par
+The above shortcomings were modified by changing the code to the following:
+\inputminted[firstline=50,lastline=62,bgcolor=mintedbg,linenos]{c++}{classify.cpp}
+The reason for the change was to perform all operations in a single pass of \texttt{D} and update adjacent values in \texttt{D2} within the same thread. This led to about $43\%$ decrease in last level cache write misses and $99.6\%$ decrease in L1 cache read misses. However, there was a $7\%$ increase in the last level cache read misses and $87.4\%$ increase in the L1 cache write misses. The increase was because of copying the data from \texttt{rangecount} array to the local array.\par
+A previous iteration of the code involved updating \texttt{rangecount} directly instead of copying it to \texttt{temp\_counts} and then updating it. This also had similar improvements in L1 cache read misses, but very little improvement in last level cache write misses and similar amounts of decrease in improvement in the other two.\par
+This is why a local array was used to reduce the misses. The decreased improvement in the two parameters is outweighed by the drastic improvement in the other two parameters. Additionally, the running time of the program is almost halved in comparison to the previous version.
+
+\section{Miscellaneous Changes}
+\begin{itemize}
+	\item The \texttt{makefile} was modified to include the \texttt{fopenmp} flag even when compiling.
+	\item There was an out of bounds access in \texttt{classify.cpp} which involved accessing \texttt{rangecount[-1]} in the second loop. This issue has been fixed in the final version.
+	\item An \texttt{issorted} method has been defined in the \texttt{Data} class to ensure that the output is sorted. \texttt{assert(D2.issorted())} has been called after the timing in \texttt{timedwork} function.
+\end{itemize}
 
 \end{document}
