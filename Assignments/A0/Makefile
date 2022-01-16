@@ -32,4 +32,4 @@ cachegrind_og: classify_og
 	valgrind --tool=cachegrind --cachegrind-out-file=classify_og.out ./classify_og rfile dfile 1009072 4 1
 
 clean:
-	rm -f $(objects) $(objects_og) classify classify_og gmon.out
+	rm -f $(objects) $(objects_og) classify classify_og gmon.out classify.out classify_og.out

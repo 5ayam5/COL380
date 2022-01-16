@@ -1,6 +1,7 @@
 *.o
 classify
 classify_og
+classify.out
 gmon.out
 report.*
 !report.tex
