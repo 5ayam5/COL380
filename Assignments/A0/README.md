@@ -16,3 +16,4 @@ Submit a single zip file named [Your Entry Number].zip with all of the following
 1. Performed a similar modification for the loop over `R`, but indices divided such that there are roughly equal number of values to update for each thread
 1. Implemented padding in the array to prevent false sharing
 1. Removed alignment in `Counter` since it was in fact increasing cache misses (when being accessed in the first threading loop)
+1. Changed complexity of the second threading loop from `O(d * r / numt)` to `O(d)` for each thread and added a local array to reduce read/write misses

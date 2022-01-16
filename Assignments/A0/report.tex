@@ -1,0 +1,34 @@
+\documentclass[11pt]{article}
+\usepackage[english]{babel}
+\usepackage{minted}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage[left=25mm, top=25mm, bottom=30mm, right=25mm]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, urlcolor=cyan]{hyperref}
+
+\title{COL380 Assignment 1}
+\author{Sayam Sethi}
+\date{January 2022}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Code Analysis and Plan of Action}
+The following observations were made after looking at the original code and analysing using various tools:
+\begin{enumerate}
+	\item Both threading loops had issues of cache misses. This was because of the loop having the property of skip-by-numt instead of a linear loop. This leads to lesser spacial locality and more cache misses as a result.
+	\item \texttt{counts[v].increase(tid)} was leading to false sharing. This was due to the increase of adjacent array elements in different threads.
+	\item The second threading loop was not dividing the work equally among all the threads. This was becuase each bin won't have an equal number of elements, therefore, the work is not fairly divided across all threads.
+	\item Additionally, in the second loop, for each range, the code was looping over the entire $D$ array, this lead to excessive read and write misses, apart from the wasted time complexity.
+\end{enumerate}
+\texttt{perf} was initially used to compare results with different modifications, however this was discarded in exchange of \texttt{cachegrid} tool of \texttt{valgrind} since \texttt{perf} had very high fluctuations across multiple runs of the same code. This led to inconsistent deductions and difficulty in removing noise from the results of the tool.\par
+Running \texttt{gprof} on the original code signified that \texttt{readRanges} took the most amount of time. This analysis wasn't helpful. Additionally, running \texttt{gprof} on the optimised code gave some absurd results that could not be inferred at all. Therefore, the output of \texttt{gprof} tool was discarded. However, the functioning of the tool has been very well understood.\par
+
+
+\end{document}
