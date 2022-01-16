@@ -1,5 +1,6 @@
 #include "classify.h"
 #include <omp.h>
+#include <string.h>
 
 Data classify(
     Data &D, const Ranges &R,
@@ -23,10 +24,10 @@ Data classify(
   }
 
   // Accumulate all sub-counts (in each interval's counter) into rangecount
-  unsigned int *rangecount = new unsigned int[R.num()]();
+  unsigned int *rangecount = new unsigned int[R.num() + 1]();
   for (int r = 0; r < R.num(); r++) { // For all intervals
     for (int t = 0; t < numt; t++)    // For all threads
-      rangecount[r] += counts[r].get(t);
+      rangecount[r + 1] += counts[r].get(t);
   }
 
   // indices array for almost equal division
@@ -34,7 +35,7 @@ Data classify(
   unsigned int count = 0, idx = 0;
 
   // Compute prefx sum on rangecount.
-  for (int i = 1; i < R.num(); i++) {
+  for (int i = 1; i <= R.num(); i++) {
     rangecount[i] += rangecount[i - 1];
     if (rangecount[i] - count >= len)
       indices[++idx] = i - 1, count = rangecount[i - 1];
@@ -49,14 +50,14 @@ Data classify(
 #pragma omp parallel num_threads(numt)
   {
     int tid = omp_get_thread_num();
-    for (int r = indices[tid]; r < indices[tid + 1];
-         r++) { // Thread together share-loop through the intervals
-      int rcount = (r == 0 ? 0 : rangecount[r - 1]);
-      for (int d = 0; d < D.ndata;
-           d++) // For each interval, thread loops through all of data and
-        if (D.data[d].value == r) // If the data item is in this interval
-          D2.data[rcount++] =
-              D.data[d]; // Copy it to the appropriate place in D2.
+    int len = indices[tid + 1] - indices[tid], offset = indices[tid];
+    int temp_counts[len];
+    memcpy(temp_counts, rangecount + offset, len * sizeof(int));
+    for (int i = 0; i < D.ndata; ++i) {
+      int r = D.data[i].value;
+      if (r >= offset && r < offset + len) {
+        D2.data[temp_counts[r - offset]++] = D.data[i];
+      }
     }
   }
 

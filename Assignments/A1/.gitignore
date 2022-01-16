@@ -2,3 +2,6 @@
 classify
 classify_og
 gmon.out
+report.*
+!report.tex
+!report.pdf
