@@ -6,7 +6,10 @@ run: driver
 	./driver input.txt $(num_threads)
 
 driver: driver.cpp libsort.so
-	g++ -L. -lsort -fopenmp psort.o driver.cpp -o driver
+	g++ -L. -lsort -fopenmp -g psort.o driver.cpp -o driver
+
+cachegrind: driver
+	valgrind --tool=cachegrind --cachegrind-out-file=cachegrind.out ./driver $(input) $(num_threads)
 
 clean:
 	rm -f *.so *.o driver

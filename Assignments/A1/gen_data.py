@@ -3,7 +3,7 @@ import sys
 import numpy as np
 
 
-ii32 = np.iinfo(np.uint8)
+ii32 = np.iinfo(np.uint32)
 
 def generate_test_set(nsize, p):
     data = np.random.randint(ii32.max, dtype=np.uint32, size=nsize)

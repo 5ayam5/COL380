@@ -53,8 +53,6 @@ int main(int argc, char *argv[]) {
   auto begin = std::chrono::high_resolution_clock::now();
   SortData(data, n, p, n_threads);
   auto end = std::chrono::high_resolution_clock::now();
-  auto elapsed =
-      std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
   double duration =
       (1e-6 *
        (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin))
