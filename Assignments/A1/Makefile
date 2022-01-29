@@ -8,8 +8,10 @@ run: driver
 driver: driver.cpp libsort.so
 	g++ -L. -lsort -fopenmp -g psort.o driver.cpp -o driver
 
-cachegrind: driver
+cachegrind: driver FORCE
 	valgrind --tool=cachegrind --cachegrind-out-file=cachegrind.out ./driver $(input) $(num_threads)
+
+FORCE: ;
 
 clean:
 	rm -f *.so *.o driver
