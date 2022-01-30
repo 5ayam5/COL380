@@ -1,14 +1,17 @@
 #include "psort.h"
+#include <algorithm>
 #include <chrono>
+#include <cstdint>
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <omp.h>
 #include <stdint.h>
 
-void check_sorted(uint32_t *data, int n) {
-  for (int i = 0; i < n - 1; i++) {
-    if (data[i] > data[i + 1]) {
-      std::cout << data[i] << ' ' << data[i + 1] << ' ' << i << '\n';
+void check_sorted(uint32_t *data, uint32_t *data_copy, int n) {
+  for (int i = 0; i < n; i++) {
+    if (data[i] != data_copy[i]) {
+      std::cout << data[i] << ' ' << data_copy[i] << ' ' << i << '\n';
       std::cout << "Data is not sorted.\n";
       return;
     }
@@ -32,22 +35,26 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
-  std::fstream fs(argv[1], std::fstream::in);
+  std::fstream fs(argv[1], std::ios::in | std::ios::binary);
 
   // Reading data
   uint32_t n, d = 0;
   int p, n_threads = atoi(argv[2]);
-  fs >> n >> p;
-  uint32_t *data = new uint32_t[n];
+
+  fs.read((char *)&n, sizeof(n));
+  fs.read((char *)&p, sizeof(p));
+
+  uint32_t *data = new uint32_t[n], *data_copy = new uint32_t[n];
 
   std::cout << "n_threads = " << n_threads << std::endl;
   std::cout << "N = " << n << " p = " << p << std::endl;
 
-  while (fs >> data[d++])
-    if (d == n)
-      break;
+  for (d = 0; d < n; d++) {
+    fs.read((char *)&data[d], sizeof(uint32_t));
+  }
 
   fs.close();
+  memcpy(data_copy, data, n * sizeof(uint32_t));
 
   // Sorting
   auto begin = std::chrono::high_resolution_clock::now();
@@ -58,12 +65,14 @@ int main(int argc, char *argv[]) {
        (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin))
            .count());
 
-  check_sorted(data, n);
+  std::sort(data_copy, data_copy + n);
+  check_sorted(data, data_copy, n);
   std::cout << "Time taken for sorting " << n << " elements with " << p
             << " buckets = " << duration << "ms" << std::endl;
 
   // Clean-up
   delete[] data;
+  delete[] data_copy;
 
   return 0;
 }

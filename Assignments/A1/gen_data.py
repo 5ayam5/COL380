@@ -1,18 +1,20 @@
-import os
 import sys
 import numpy as np
+import struct
 
+np.random.seed(314)
 
 ii32 = np.iinfo(np.uint32)
 
 def generate_test_set(nsize, p):
+    print(f'generating data for {nsize} {p}')
     data = np.random.randint(ii32.max, dtype=np.uint32, size=nsize)
-    infile = f'input_{nsize}.txt'
+    infile = f'inputs/input_{nsize}.bin'
 
-    with open(infile, 'w') as fp:
-        lines = [f"{nsize} {p}\n"]
-        lines.extend([f"{x}\n" for x in data])
-        fp.writelines(lines)
+    with open(infile, 'wb') as fp:
+        fp.write(struct.pack('Ii', nsize, p))
+        for val in data:
+            fp.write(struct.pack('I', val))
 
     print(f'Sample data saved at {infile}')
 
