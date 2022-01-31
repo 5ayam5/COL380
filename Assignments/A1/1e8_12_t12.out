@@ -1,0 +1,61 @@
+inputs/input_100000000_12.bin
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 1
+n_threads = 1
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 38389ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 2
+n_threads = 2
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 24003.6ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 3
+n_threads = 3
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 17090.7ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 4
+n_threads = 4
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 13816.9ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 5
+n_threads = 5
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 11505.6ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 6
+n_threads = 6
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 9288.82ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 7
+n_threads = 7
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 9329.47ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 8
+n_threads = 8
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 9718.87ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 9
+n_threads = 9
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 9009.45ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 10
+n_threads = 10
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 9495.37ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_218/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 11
+n_threads = 11
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 8994.21ms
+
+LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 12
+n_threads = 12
+N = 100000000 p = 12
+Time taken for sorting 100000000 elements with 12 buckets = 9637.38ms0

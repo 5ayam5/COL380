@@ -7,7 +7,7 @@
 void SequentialSort(uint32_t *data, uint32_t n) {
   if (n <= 1)
     return;
-  uint64_t nl = n / 2, nr = (n + 1) / 2;
+  uint32_t nl = n / 2, nr = ((uint64_t)n + 1) / 2;
   uint32_t *left = new uint32_t[nl], *right = new uint32_t[nr];
   memcpy(left, data, nl * sizeof(uint32_t));
   memcpy(right, data + nl, nr * sizeof(uint32_t));
@@ -119,7 +119,7 @@ void ParallelSort(uint32_t *data, uint32_t n, int p) {
     b_size[j] += b_size[j - 1];
   sz = 2 * (n / p);
 
-  for (uint64_t j = 0; j < p; j++) {
+  for (uint32_t j = 0; j < p; j++) {
 #pragma omp task shared(b, b_size, data, sz, p)
     {
       uint32_t nj = b_size[j + 1] - b_size[j], i = b_size[j];

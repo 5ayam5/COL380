@@ -8,8 +8,8 @@
 #include <omp.h>
 #include <stdint.h>
 
-void check_sorted(uint32_t *data, uint32_t *data_copy, int n) {
-  for (int i = 0; i < n; i++) {
+void check_sorted(uint32_t *data, uint32_t *data_copy, uint32_t n) {
+  for (uint64_t i = 0; i < n; i++) {
     if (data[i] != data_copy[i]) {
       std::cout << data[i] << ' ' << data_copy[i] << ' ' << i << '\n';
       std::cout << "Data is not sorted.\n";
