@@ -58,4 +58,4 @@ Time taken for sorting 100000000 elements with 12 buckets = 8994.21ms
 LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:/home/apps/anaconda3_2018/4.6.9/pkgs/cudatoolkit-dev/lib64:/home/apps/anaconda3_2018/4.6.9/lib:. ./driver inputs/input_100000000_12.bin 12
 n_threads = 12
 N = 100000000 p = 12
-Time taken for sorting 100000000 elements with 12 buckets = 9637.38ms0
+Time taken for sorting 100000000 elements with 12 buckets = 9637.38ms

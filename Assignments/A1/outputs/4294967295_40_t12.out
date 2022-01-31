@@ -58,4 +58,4 @@ Time taken for sorting 4294967295 elements with 40 buckets = 1.71948e+06ms
 LD_LIBRARY_PATH=/home/soft/centOS/compilers/gcc/openmpi/4.0.2/lib:/home/soft/centOS/compilers/gcc/9.1.0_new/lib64:/home/apps/LIBISL/0.18/gnu/lib:. ./driver /scratch/cse/phd/csz208845/a1_data/input_4294967295.bin 1
 n_threads = 1
 N = 4294967295 p = 40
-Time taken for sorting 4294967295 elements with 40 buckets = 2.73971e+06ms
+Time taken for sorting 4294967295 elements with 40 buckets = 3.31971e+06ms

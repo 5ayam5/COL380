@@ -114,7 +114,7 @@ void ParallelSort(uint32_t *data, uint32_t n, int p) {
   }
 #pragma omp taskwait
 
-  // Step 6
+  // Step 6, 5
   for (uint32_t j = 1; j <= p; j++)
     b_size[j] += b_size[j - 1];
   sz = 2 * (n / p);
