@@ -65,7 +65,7 @@ Following are the plots for different values of $n$ and $p$ and comments for the
 	\caption{$n = 10^6, p = 40$}
 	\label{fig:1e6_40}
 \end{figure}
-The scalability for this case is $5.09\times$ for $12$ cores. There is linear decrease until $3$ cores and the absolute value of the slope decreases after that. The value of slope decreases even further from $7$ cores (and remains almost constant from $6$ to $7$ cores).
+The scalability for this case is $5.09\times$ for $12$ cores, from $394.356ms$ to $77.4758ms$. There is linear decrease until $3$ cores and the absolute value of the slope decreases after that. The value of slope decreases even further from $7$ cores (and remains almost constant from $6$ to $7$ cores).
 
 \begin{figure}[H]
 	\begin{center}
@@ -74,7 +74,7 @@ The scalability for this case is $5.09\times$ for $12$ cores. There is linear de
 	\caption{$n = 10^7, p = 40$}
 	\label{fig:1e7_40}
 \end{figure}
-The scalability for this is $5.63\times$ for $12$ cores. The curve follows an asymptotic pattern and the running time almost saturates by $8$ cores. The scalability upto $8$ cores is $5.25\times$. The constancy is partly due to the fact that when scheduling tasks, the division cannot be done equally across all threads and some threads work on fewer loops than the other threads.
+The scalability for this is $5.63\times$ for $12$ cores, from $4598.39ms$ to $816.751ms$. The curve follows an asymptotic pattern and the running time almost saturates by $8$ cores. The scalability upto $8$ cores is $5.25\times$. The constancy is partly due to the fact that when scheduling tasks, the division cannot be done equally across all threads and some threads work on fewer loops than the other threads.
 
 \begin{figure}[H]
 	\begin{center}
@@ -83,7 +83,7 @@ The scalability for this is $5.63\times$ for $12$ cores. The curve follows an as
 	\caption{$n = 10^8, p = 12$}
 	\label{fig:1e8_12}
 \end{figure}
-The maximum scalability for this is $4.27\times$ for $11$ cores. This is much lesser than the scalability in the previous parts. This is due to the fact that the number of bins is fewer and thus the probability of equal division of work reduces. The running time saturates by $6$ cores and the scalability then is $4.13$. Additionally, the fluctuations in running time for $8, 10, 12$ threads is due to the scheduling scenario where some threads need to perform comparatively more tasks. This increases the execution time.
+The maximum scalability for this is $4.27\times$ for $11$ cores, from $38.389s$ to $8.99421s$. This is much lesser than the scalability in the previous parts. This is due to the fact that the number of bins is fewer and thus the probability of equal division of work reduces. The running time saturates by $6$ cores and the scalability then is $4.13$. Additionally, the fluctuations in running time for $8, 10, 12$ threads is due to the scheduling scenario where some threads need to perform comparatively more tasks. This increases the execution time.
 
 \begin{figure}[H]
 	\begin{center}
@@ -92,7 +92,7 @@ The maximum scalability for this is $4.27\times$ for $11$ cores. This is much le
 	\caption{$n = 10^8, p = 40$}
 	\label{fig:1e8_40}
 \end{figure}
-The scalability is $6.43\times$ for $12$ cores. This situation doesn't have the limitation of reaching saturation like the previous graph. Therefore, the speedup slows down towards $12$ cores but there is still a linear improvement from $9$ to $12$ cores.
+The scalability is $6.43\times$ for $12$ cores, from $49.3318s$ to $7.67387s$. This situation doesn't have the limitation of reaching saturation like the previous graph. Therefore, the speedup slows down towards $12$ cores but there is still a linear improvement from $9$ to $12$ cores.
 
 \begin{figure}[H]
 	\begin{center}
@@ -101,7 +101,7 @@ The scalability is $6.43\times$ for $12$ cores. This situation doesn't have the 
 	\caption{$n = 2^{32} - 1, p = 40$}
 	\label{fig:4294967295_40}
 \end{figure}
-The maximum scalability achieved is $6.70\times$ for $11$ cores. There is significant fluctuation towards large number of cores, however, the general trend is that the running time is significantly reducing even at $12$ cores. The same isn't visible in the graph due to the large amount of time taken for fewer number of cores.
+The maximum scalability achieved is $6.70\times$ for $11$ cores, from $55.3285$ minutes to $8.2608$ minutes. There is significant fluctuation towards large number of cores, however, the general trend is that the running time is significantly reducing even at $12$ cores. The same isn't visible in the graph due to the large amount of time taken for fewer number of cores.
 
 \subsection{Conclusion}
 The maximum speedup obtained in the entire analysis was $6.70\times$. The best efficiency of the parallelisation was $0.56$. The speed-up would have been better if the analysis could have been performed upto $24$ cores however, due to limited resources on HPC, the same could not be done. Overall, every possible loop in the function \texttt{ParallelSort} was parallelised and any further optimisation would be micro-optimisations, especially in memory allocation.\par
