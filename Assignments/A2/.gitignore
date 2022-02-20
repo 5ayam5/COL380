@@ -1,1 +1,4 @@
 wtf
+*.o
+.vscode/
+compile_flags.txt
