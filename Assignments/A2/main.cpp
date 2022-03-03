@@ -1,6 +1,7 @@
 #include "graph.hpp"
 #include "randomizer.hpp"
 #include <assert.h>
+#include <chrono>
 #include <mpi.h>
 #include <string>
 
@@ -25,6 +26,8 @@ int main(int argc, char *argv[]) {
               &random_generator, outfile);
   int rank, size;
 
+  auto begin = std::chrono::high_resolution_clock::now();
+
   // Starting MPI pipeline
   MPI_Init(NULL, NULL);
 
@@ -48,6 +51,14 @@ int main(int argc, char *argv[]) {
       graph.rwr(i);
     graph.out->close();
     MPI_Finalize();
+    if (rank == 0) {
+      auto end = std::chrono::high_resolution_clock::now();
+      double duration =
+          (1e-6 *
+           (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin))
+               .count());
+      std::cout << "Time taken: " << duration << "ms" << '\n';
+    }
     return 0;
   }
 
@@ -68,7 +79,6 @@ int main(int argc, char *argv[]) {
     while (true) {
       MPI_Send(&rank, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
       MPI_Recv(&node, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
-      // std::cout << std::to_string(node) + '\n';
       if (node == -1)
         break;
       graph.rwr(node);
@@ -77,5 +87,13 @@ int main(int argc, char *argv[]) {
   }
 
   MPI_Finalize();
+  if (rank == 0) {
+    auto end = std::chrono::high_resolution_clock::now();
+    double duration =
+        (1e-6 *
+         (std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin))
+             .count());
+    std::cout << "Time taken: " << duration << "ms" << '\n';
+  }
   return 0;
 }

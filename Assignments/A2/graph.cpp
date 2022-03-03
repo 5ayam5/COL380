@@ -21,13 +21,13 @@ void read_nid(nid_t &n, std::ifstream &file) {
 }
 
 void write_val(nid_t n, std::ofstream *file) {
-  uint offset = sizeof(n) * 8;
-  char buffer;
-  do {
-    offset -= 8;
-    buffer = (n >> offset) & 0xFF;
-    file->write(&buffer, sizeof(buffer));
-  } while (offset != 0);
+  uint sz = sizeof(n);
+  char buffer[sz];
+  for (int i = 0; i < sz; i++) {
+    buffer[sz - i - 1] = n & 0xFF;
+    n >>= 8;
+  }
+  file->write(buffer, sizeof(buffer));
 }
 
 void Graph::construct_graph(std::ifstream &file) {
@@ -60,8 +60,7 @@ void Graph::rwr(nid_t u) {
           continue;
         }
         w = vec[val % vec.size()];
-        if (w != u && !this->neighbours[u].count(w))
-          scores[w]++;
+        scores[w]++;
       }
     }
   };
@@ -69,26 +68,32 @@ void Graph::rwr(nid_t u) {
   for (auto v : this->adj[u])
     walk(v, v, this->num_walks, this->num_steps);
 
-  std::vector<std::pair<cnt, nid_t>> recommendations;
+  auto comp = [](const std::pair<cnt, nid_t> &a,
+                 const std::pair<cnt, nid_t> &b) {
+    if (a.second == b.second)
+      return a.first > b.first;
+    return a.second < b.second;
+  };
+
+  std::priority_queue<std::pair<cnt, nid_t>, std::vector<std::pair<cnt, nid_t>>,
+                      decltype(comp)>
+      recommendations(comp);
   for (auto p : scores)
-    recommendations.push_back({p.second, p.first});
-  std::sort(recommendations.begin(), recommendations.end(),
-            [](const std::pair<cnt, nid_t> &a, const std::pair<cnt, nid_t> &b) {
-              if (a.first == b.first)
-                return a.second < b.second;
-              return a.first > b.first;
-            });
+    if (p.first != u && !this->neighbours[u].count(p.first))
+      recommendations.push({p.first, p.second});
 
   this->out->seekp(u * (2 * this->num_recs + 1) * sizeof(u));
   write_val(this->adj[u].size(), this->out);
-  for (cnt i = 0; i < std::min(recommendations.size(), this->num_recs); i++) {
-    write_val(recommendations[i].second, this->out);
-    write_val(recommendations[i].first, this->out);
+  auto sz = std::min(recommendations.size(), this->num_recs);
+  for (cnt i = 0; i < sz; i++) {
+    auto p = recommendations.top();
+    recommendations.pop();
+    write_val(p.first, this->out);
+    write_val(p.second, this->out);
   }
   char buffer[4];
   buffer[0] = 'N', buffer[1] = 'U', buffer[2] = 'L', buffer[3] = 'L';
-  for (cnt i = std::min(recommendations.size(), this->num_recs);
-       i < this->num_recs; i++) {
+  for (cnt i = sz; i < this->num_recs; i++) {
     this->out->write(buffer, sizeof(buffer));
     this->out->write(buffer, sizeof(buffer));
   }

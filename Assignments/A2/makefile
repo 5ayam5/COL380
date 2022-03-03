@@ -1,5 +1,5 @@
 CC=mpic++
-CFLAGS=-std=c++17 -g -Wall -Wextra
+CFLAGS=-std=c++17 -g -Wall -Wextra -O3
 
 NP=4
 DATA=data/8717_31525/edges.dat

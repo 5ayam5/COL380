@@ -2,6 +2,7 @@
 #include "randomizer.hpp"
 #include <algorithm>
 #include <fstream>
+#include <queue>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
