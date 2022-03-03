@@ -1,5 +1,5 @@
 CC=mpic++
-CFLAGS=-std=c++17
+CFLAGS=-std=c++17 -g -Wall -Wextra
 
 NP=4
 DATA=data/8717_31525/edges.dat
@@ -23,5 +23,8 @@ run: wtf
 %.o: %.cpp *.hpp
 	$(CC) $(CFLAGS) -c $<
 
+dat_to_text: dat_to_text.cpp
+	$(CC) $(CFLAGS) dat_to_text.cpp -o dat_to_text
+
 clean:
-	rm -f wtf $(objects)
+	rm -f wtf dat_to_text $(objects)
